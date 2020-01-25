@@ -15,9 +15,11 @@ object TumblrManager {
     private var consumerSecret = ""
     private var callbackUrl = ""
 
-    fun setup(consumerKey: String,
+    fun setup(
+        consumerKey: String,
         consumerSecret: String,
-        callbackUrl: String) {
+        callbackUrl: String
+    ) {
         this.consumerKey = consumerKey
         this.consumerSecret = consumerSecret
         this.callbackUrl = callbackUrl
@@ -72,7 +74,7 @@ object TumblrManager {
      * @param uri the uri to check
      * @return true if uri can be handled, false otherwise
      */
-    suspend fun handleOpenURI(context: Context, uri: Uri?): Boolean = coroutineScope{
+    suspend fun handleOpenURI(context: Context, uri: Uri?): Boolean = coroutineScope {
         if (uri != null && callbackUrl.startsWith(uri.scheme!!)) access(context, uri)
         else false
     }

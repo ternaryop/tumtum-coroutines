@@ -9,7 +9,8 @@ import org.json.JSONException
 fun Tumblr.getFollowers(
     tumblrName: String,
     params: Map<String, String>? = null,
-    followers: TumblrFollowers? = null): TumblrFollowers {
+    followers: TumblrFollowers? = null
+): TumblrFollowers {
     val apiUrl = Tumblr.getApiUrl(tumblrName, "/followers")
 
     val modifiedParams = HashMap<String, String>()
@@ -36,4 +37,3 @@ fun Tumblr.getFollowers(tumblrName: String, offset: Int, limit: Int, followers: 
 
     return getFollowers(tumblrName, params, followers)
 }
-

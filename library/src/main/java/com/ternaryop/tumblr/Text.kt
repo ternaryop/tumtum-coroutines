@@ -36,4 +36,3 @@ private fun Tumblr.createTextPost(tumblrName: String, title: String, body: Strin
     val json = consumer.jsonFromPost(apiUrl, params)
     return json.getJSONObject("response").getLong("id")
 }
-

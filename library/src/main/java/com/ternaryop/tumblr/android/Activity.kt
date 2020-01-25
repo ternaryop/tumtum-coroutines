@@ -23,16 +23,17 @@ fun TumblrPost.finishActivity(activity: Activity, extraPostName: String) {
 }
 
 fun TumblrPhotoPost.browseImageBySize(
-    Context: Context,
+    context: Context,
     title: String,
-    startImageViewer: (String, TumblrPhotoPost) -> Unit) {
+    startImageViewer: (String, TumblrPhotoPost) -> Unit
+) {
     val photoAltSize = firstPhotoAltSize ?: return
     val arrayAdapter = ArrayAdapter(
-        Context,
+        context,
         android.R.layout.select_dialog_item,
         photoAltSize)
 
-    AlertDialog.Builder(Context)
+    AlertDialog.Builder(context)
         .setTitle(title)
         .setAdapter(arrayAdapter) { _, which ->
             arrayAdapter.getItem(which)?.let { startImageViewer(it.url, this) }
