@@ -1,8 +1,10 @@
 package com.ternaryop.tumblr
 
+import org.json.JSONException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.collections.set
 
 fun Tumblr.getQueue(tumblrName: String, params: Map<String, String>): List<TumblrPost> {
     val apiUrl = Tumblr.getApiUrl(tumblrName, "/posts/queue")
@@ -12,7 +14,7 @@ fun Tumblr.getQueue(tumblrName: String, params: Map<String, String>): List<Tumbl
         val json = consumer.jsonFromGet(apiUrl, params)
         val arr = json.getJSONObject("response").getJSONArray("posts")
         Tumblr.addPostsToList(list, arr)
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 
@@ -36,7 +38,7 @@ fun Tumblr.schedulePost(tumblrName: String, post: TumblrPost, timestamp: Long): 
         params["tags"] = post.tagsAsString
 
         return consumer.jsonFromPost(apiUrl, params).getJSONObject("response").getLong("id")
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 }
@@ -50,12 +52,13 @@ fun Tumblr.queueCount(tumblrName: String): Int {
     try {
         val params = HashMap<String, String>(1)
         do {
-            val arr = consumer.jsonFromGet(apiUrl, params).getJSONObject("response").getJSONArray("posts")
+            val arr =
+                consumer.jsonFromGet(apiUrl, params).getJSONObject("response").getJSONArray("posts")
             readCount = arr.length()
             count += readCount
             params["offset"] = count.toString()
         } while (readCount == Tumblr.MAX_POST_PER_REQUEST)
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 
@@ -66,17 +69,13 @@ fun Tumblr.queueAll(tumblrName: String): List<TumblrPost> {
     val list = mutableListOf<TumblrPost>()
     var readCount: Int
 
-    try {
-        val params = HashMap<String, String>(1)
-        do {
-            val queue = getQueue(tumblrName, params)
-            readCount = queue.size
-            list.addAll(queue)
-            params["offset"] = list.size.toString()
-        } while (readCount == Tumblr.MAX_POST_PER_REQUEST)
-    } catch (e: Exception) {
-        throw TumblrException(e)
-    }
+    val params = HashMap<String, String>(1)
+    do {
+        val queue = getQueue(tumblrName, params)
+        readCount = queue.size
+        list.addAll(queue)
+        params["offset"] = list.size.toString()
+    } while (readCount == Tumblr.MAX_POST_PER_REQUEST)
 
     return list
 }

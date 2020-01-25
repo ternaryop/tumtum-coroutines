@@ -14,7 +14,7 @@ class Tumblr constructor(val consumer: TumblrHttpOAuthConsumer) {
                 val json = consumer.jsonFromGet(apiUrl)
                 val jsonBlogs = json.getJSONObject("response").getJSONObject("user").getJSONArray("blogs")
                 return (0 until jsonBlogs.length()).map { Blog(jsonBlogs.getJSONObject(it)) }.toTypedArray()
-            } catch (e: Exception) {
+            } catch (e: JSONException) {
                 throw TumblrException(e)
             }
         }
@@ -30,7 +30,7 @@ class Tumblr constructor(val consumer: TumblrHttpOAuthConsumer) {
             val jsonObject = consumer.jsonFromPost(apiUrl, params)
             val response = jsonObject.getJSONObject("response")
             return response.getLong("id")
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
             throw TumblrException(e)
         }
     }
@@ -41,11 +41,7 @@ class Tumblr constructor(val consumer: TumblrHttpOAuthConsumer) {
         val params = HashMap<String, String>()
         params["id"] = id.toString()
 
-        try {
-            consumer.jsonFromPost(apiUrl, params)
-        } catch (e: Exception) {
-            throw TumblrException(e)
-        }
+        consumer.jsonFromPost(apiUrl, params)
     }
 
     fun editPost(tumblrName: String, params: Map<String, String>) {

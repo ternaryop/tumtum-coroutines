@@ -61,11 +61,9 @@ fun Tumblr.getPhotoPosts(tumblrName: String, params: Map<String, String>): List<
             }
             list.add(post)
         }
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 
     return list
 }
-
-

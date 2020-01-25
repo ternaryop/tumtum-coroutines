@@ -1,6 +1,7 @@
 package com.ternaryop.tumblr
 
 import org.json.JSONArray
+import org.json.JSONException
 
 fun Tumblr.getDraftPosts(tumblrName: String, maxTimestamp: Long): List<TumblrPost> {
     val apiUrl = Tumblr.getApiUrl(tumblrName, "/posts/draft")
@@ -17,7 +18,7 @@ fun Tumblr.getDraftPosts(tumblrName: String, maxTimestamp: Long): List<TumblrPos
 
             arr = consumer.jsonFromGet(apiUrl, params).getJSONObject("response").getJSONArray("posts")
         }
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 
@@ -33,7 +34,7 @@ fun Tumblr.saveDraft(tumblrName: String, id: Long) {
 
     try {
         consumer.jsonFromPost(apiUrl, params)
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 }
@@ -68,7 +69,7 @@ fun Tumblr.draftCount(tumblrName: String): Int {
 
             arr = consumer.jsonFromGet(apiUrl, params).getJSONObject("response").getJSONArray("posts")
         }
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         throw TumblrException(e)
     }
 

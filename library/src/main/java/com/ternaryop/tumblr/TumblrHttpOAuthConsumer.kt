@@ -14,8 +14,12 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-class TumblrHttpOAuthConsumer(val consumerKey: String,
-    apiKey: String, callbackUrl: String, private val accessToken: OAuth1AccessToken) {
+class TumblrHttpOAuthConsumer(
+    val consumerKey: String,
+    apiKey: String,
+    callbackUrl: String,
+    private val accessToken: OAuth1AccessToken
+) {
     private val oAuthService = createAuthService(consumerKey, apiKey, callbackUrl)
 
     @Throws(IOException::class)
@@ -46,19 +50,11 @@ class TumblrHttpOAuthConsumer(val consumerKey: String,
     }
 
     fun jsonFromGet(url: String, params: Map<String, *>? = null): JSONObject {
-        try {
-            return checkResult(getSignedGetResponse(url, params).stream.readJson())
-        } catch (e: Exception) {
-            throw TumblrException(e)
-        }
+        return checkResult(getSignedGetResponse(url, params).stream.readJson())
     }
 
     fun jsonFromPost(url: String, params: Map<String, *>): JSONObject {
-        try {
-            return checkResult(getSignedPostResponse(url, params).stream.readJson())
-        } catch (e: Exception) {
-            throw TumblrException(e)
-        }
+        return checkResult(getSignedPostResponse(url, params).stream.readJson())
     }
 
     /**
@@ -68,32 +64,33 @@ class TumblrHttpOAuthConsumer(val consumerKey: String,
      * @return the json
      */
     fun publicJsonFromGet(url: String, params: Map<String, *>): JSONObject {
-        try {
-            val sbUrl = StringBuilder("$url?api_key=$consumerKey")
-            for ((key, value) in params) {
-                sbUrl.append("&").append(key).append("=").append(value)
-            }
-            return checkResult(URL(sbUrl.toString()).readJson())
-        } catch (e: Exception) {
-            throw TumblrException(e)
+        val sbUrl = StringBuilder("$url?api_key=$consumerKey")
+        for ((key, value) in params) {
+            sbUrl.append("&").append(key).append("=").append(value)
         }
+        return checkResult(URL(sbUrl.toString()).readJson())
     }
 
-    @Throws(JSONException::class)
     private fun checkResult(json: JSONObject): JSONObject {
+        try {
+            val (status, message) = getStatusInfo(json)
+
+            if (status != HttpURLConnection.HTTP_OK && status != HttpURLConnection.HTTP_CREATED) {
+                throw TumblrException(getErrorFromResponse(json) ?: message)
+            }
+        } catch (e: JSONException) {
+            throw TumblrException(e)
+        }
+        return json
+    }
+
+    private fun getStatusInfo(json: JSONObject): Pair<Int, String> {
         if (!json.has("meta")) {
             throw TumblrException("Invalid tumblr response, meta not found")
         }
-        val status = json.getJSONObject("meta").getInt("status")
-
-        if (status != HttpURLConnection.HTTP_OK && status != HttpURLConnection.HTTP_CREATED) {
-            var errorMessage = getErrorFromResponse(json)
-            if (errorMessage == null) {
-                errorMessage = json.getJSONObject("meta").getString("msg")
-            }
-            throw TumblrException(errorMessage!!)
+        return json.getJSONObject("meta").let {
+            Pair(it.getInt("status"), it.getString("msg"))
         }
-        return json
     }
 
     @Throws(JSONException::class)
@@ -101,13 +98,12 @@ class TumblrHttpOAuthConsumer(val consumerKey: String,
         if (json.has("response")) {
             val array = json.optJSONArray("response")
             // for example when an invalid id is passed the returned response contains an empty array
-            if (array != null && array.length() == 0) {
-                return null
-            }
-            val response = json.getJSONObject("response")
-            if (response.has("errors")) {
-                val errors = response.getJSONArray("errors")
-                return (0 until errors.length()).joinToString(",") { errors.getString(it) }
+            if (array != null && array.length() > 0) {
+                val response = json.getJSONObject("response")
+                if (response.has("errors")) {
+                    val errors = response.getJSONArray("errors")
+                    return (0 until errors.length()).joinToString(",") { errors.getString(it) }
+                }
             }
         }
         return null
