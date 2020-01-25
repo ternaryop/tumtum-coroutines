@@ -1,24 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.41'
+    ext.kotlin_version = '1.3.61'
     ext {
         minSdkVersion = 21
         targetSdkVersion = 29
         compileSdkVersion = 29
         buildToolsVersion = '28.0.3'
 
-        androidXAppCompatLibVersion = '1.1.0-rc01'
-        androidXPreferenceLibVersion = '1.1.0-rc01'
+        androidXAppCompatLibVersion = '1.2.0-alpha01'
+        androidXPreferenceLibVersion = '1.1.0'
 
-        kotlinxCoroutinesCore = '1.2.1'
+        kotlinxCoroutinesCore = '1.3.3'
 
-        okhttp3HttpLibVersion = '4.1.0'
+        okhttp3HttpLibVersion = '4.3.1'
         picassoLibVersion = '2.71828'
 
-        scribejavaCoreLibVersion = '6.8.0'
+        scribejavaCoreLibVersion = '6.9.0'
 
-        ternaryOpUtilLibVersion = '1.4.4'
+        ternaryOpUtilLibVersion = '1.4.8'
 
         junitLibVersion = '4.13-beta-3'
 
@@ -29,7 +29,7 @@ buildscript {
     }
 
     ext.publishPackage = [
-            version: '1.0.0',
+            version: '1.0.1',
             groupId: 'com.ternaryop',
             artifactId: 'tumblr-coroutines',
             bintrayRepoName: 'TumTum',
@@ -43,7 +43,7 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         classpath "com.novoda:bintray-release:$novaBintrayReleaseLibVersion"
