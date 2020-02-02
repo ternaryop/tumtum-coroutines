@@ -1,20 +1,12 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply from: '../mavenlocal.gradle'
 apply from: '../bintrayconfig.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-
-        // fix the error "More than one file was found with OS independent path 'META-INF/library_release.kotlin_module'"
-        // when used inside the app
-        kotlinOptions.freeCompilerArgs += ['-module-name', "${rootProject.ext.publishPackage.groupId}.${rootProject.ext.publishPackage.artifactId}"]
-    }
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -45,6 +37,8 @@ dependencies {
     api "com.github.scribejava:scribejava-core:${rootProject.ext.scribejavaCoreLibVersion}"
 
     api "com.squareup.picasso:picasso:${rootProject.ext.picassoLibVersion}"
+
+    api "io.coil-kt:coil:${rootProject.ext.coilLibVersion}"
 
     api "com.squareup.okhttp3:okhttp:${rootProject.ext.okhttp3HttpLibVersion}"
 
