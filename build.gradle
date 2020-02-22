@@ -20,7 +20,7 @@ buildscript {
 
         coilLibVersion = '0.9.3'
 
-        ternaryOpUtilLibVersion = '1.4.8'
+        ternaryOpUtilLibVersion = '1.4.9'
 
         junitLibVersion = '4.13-beta-3'
 
@@ -31,7 +31,7 @@ buildscript {
     }
 
     ext.publishPackage = [
-            version: '1.0.2',
+            version: '1.0.3',
             groupId: 'com.ternaryop',
             artifactId: 'tumblr-coroutines',
             bintrayRepoName: 'TumTum',
@@ -56,7 +56,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        mavenLocal()
     }
 }
 
