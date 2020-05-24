@@ -34,14 +34,13 @@ object CoilTumblrOAuth {
         }
     }
 
-    private fun create(context: Context) = ImageLoader(context) {
-        okHttpClient {
+    private fun create(context: Context) = ImageLoader.Builder(context)
+        .okHttpClient(
             OkHttpClient.Builder()
                 .cache(CoilUtils.createDefaultCache(context))
                 .addInterceptor { load(TumblrManager.getInstance(context), it.request()) }
-                .build()
-        }
-    }
+                .build())
+        .build()
 
     private fun load(tumblr: Tumblr, request: Request): Response {
         val url = request.url.toString()
