@@ -1,12 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+apply plugin: "com.github.ben-manes.versions"
+
 buildscript {
     ext.kotlin_version = '1.4.0'
     ext {
         minSdkVersion = 21
         targetSdkVersion = 29
         compileSdkVersion = 29
-        buildToolsVersion = '28.0.3'
 
         androidXAppCompatLibVersion = '1.3.0-alpha01'
         androidXPreferenceLibVersion = '1.1.1'
@@ -14,11 +15,10 @@ buildscript {
         kotlinxCoroutinesCore = '1.3.9'
 
         okhttp3HttpLibVersion = '4.8.1'
-        picassoLibVersion = '2.71828'
 
         scribejavaCoreLibVersion = '7.0.0'
 
-        coilLibVersion = '0.11.0'
+        coilLibVersion = '0.12.0'
 
         ternaryOpUtilLibVersion = '1.4.9'
 
@@ -26,17 +26,16 @@ buildscript {
 
         androidXEspressoCoreLibVersion = '3.2.0'
         androidXTestRunner = '1.2.0'
-
-        novaBintrayReleaseLibVersion = '0.9.1'
     }
 
     ext.publishPackage = [
-            version: '1.0.5',
+            version: '1.0.6',
             groupId: 'com.ternaryop',
             artifactId: 'tumblr-coroutines',
             bintrayRepoName: 'TumTum',
             desc: 'Tumblr Api Library focused on Android integration',
-            website: 'https://github.com/ternaryop/tumtum'
+            website: 'https://github.com/ternaryop/tumtum',
+            vcsUrl: 'https://github.com/ternaryop/tumtum.git'
     ]
 
     repositories {
@@ -45,10 +44,11 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.29.0"
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        classpath "com.novoda:bintray-release:$novaBintrayReleaseLibVersion"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
 
@@ -68,12 +68,13 @@ subprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-
         kotlinOptions {
+            // -Xjvm-default=all required by coil https://coil-kt.github.io/coil/getting_started/#java-8
+            freeCompilerArgs = [
+                    '-module-name', "${rootProject.ext.publishPackage.groupId}.${rootProject.ext.publishPackage.artifactId}",
+                    '-Xjvm-default=all'
+            ]
             jvmTarget = '1.8'
-            // fix the error "More than one file was found with OS independent path 'META-INF/library_release.kotlin_module'"
-            // when used inside the app
-            freeCompilerArgs += ['-module-name', "${rootProject.ext.publishPackage.groupId}.${rootProject.ext.publishPackage.artifactId}"]
         }
     }
 }

@@ -6,7 +6,6 @@ apply from: '../bintrayconfig.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -36,8 +35,6 @@ dependencies {
 
     api "com.github.scribejava:scribejava-core:${rootProject.ext.scribejavaCoreLibVersion}"
 
-    api "com.squareup.picasso:picasso:${rootProject.ext.picassoLibVersion}"
-
     api "io.coil-kt:coil:${rootProject.ext.coilLibVersion}"
 
     api "com.squareup.okhttp3:okhttp:${rootProject.ext.okhttp3HttpLibVersion}"
@@ -48,7 +45,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:${androidXTestRunner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${androidXEspressoCoreLibVersion}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {
     mavenCentral()
