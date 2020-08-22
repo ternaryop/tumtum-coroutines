@@ -35,8 +35,6 @@ dependencies {
 
     api "com.github.scribejava:scribejava-core:${rootProject.ext.scribejavaCoreLibVersion}"
 
-    api "io.coil-kt:coil:${rootProject.ext.coilLibVersion}"
-
     api "com.squareup.okhttp3:okhttp:${rootProject.ext.okhttp3HttpLibVersion}"
 
     api "com.ternaryop:utils:${rootProject.ext.ternaryOpUtilLibVersion}"
