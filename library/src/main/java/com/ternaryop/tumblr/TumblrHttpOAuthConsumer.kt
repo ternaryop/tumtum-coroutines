@@ -36,7 +36,7 @@ class TumblrHttpOAuthConsumer(
         return oAuthService.execute(MultipartConverter(oAuthReq, params).request)
     }
 
-    fun getSignedGetResponse(url: String, params: Map<String, *>?): Response {
+    fun getSignedGetAuthRequest(url: String, params: Map<String, *>? = null): OAuthRequest {
         val oAuthReq = OAuthRequest(Verb.GET, url)
 
         if (params != null) {
@@ -46,7 +46,11 @@ class TumblrHttpOAuthConsumer(
             }
         }
         oAuthService.signRequest(accessToken, oAuthReq)
-        return oAuthService.execute(oAuthReq)
+        return oAuthReq
+    }
+
+    fun getSignedGetResponse(url: String, params: Map<String, *>? = null): Response {
+        return oAuthService.execute(getSignedGetAuthRequest(url, params))
     }
 
     fun jsonFromGet(url: String, params: Map<String, *>? = null): JSONObject {
