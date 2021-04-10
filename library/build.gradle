@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply from: '../mavenlocal.gradle'
-apply from: '../bintrayconfig.gradle'
+apply plugin: "com.vanniktech.maven.publish"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName rootProject.ext.publishPackage.version
+        versionName VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -29,7 +27,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api "androidx.preference:preference:${androidXPreferenceLibVersion}"
+    api "androidx.preference:preference-ktx:${androidXPreferenceLibVersion}"
 
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext.kotlinxCoroutinesCore}"
 
@@ -37,7 +35,7 @@ dependencies {
 
     api "com.squareup.okhttp3:okhttp:${rootProject.ext.okhttp3HttpLibVersion}"
 
-    api "com.ternaryop:utils:${rootProject.ext.ternaryOpUtilLibVersion}"
+    api "io.github.ternaryop:common-utils:${rootProject.ext.ternaryOpUtilLibVersion}"
 
     testImplementation "junit:junit:${junitLibVersion}"
     androidTestImplementation "androidx.test:runner:${androidXTestRunner}"

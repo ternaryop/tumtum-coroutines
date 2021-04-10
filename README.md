@@ -6,9 +6,20 @@ Tumblr Api for Android
 Local Maven distribution
 ========================
 
-    ./gradlew uploadArchives
+    ./gradlew publishToMavenLocal
 
-Bintray distribution
+Maven Central distribution
 ========================
 
-    ./gradlew bintrayUpload
+    ./gradlew publish --no-daemon --no-parallel
+    ./gradlew closeAndReleaseRepository
+
+Android Studio configuration
+============================
+
+1. Run -> Edit Configuration
+2. Add a `Gradle` task
+
+|      Name      | Gradle Project      | Tasks               |
+|:--------------:|---------------------|---------------------|
+| Local Install  | ../app/build.gradle | publishToMavenLocal |
