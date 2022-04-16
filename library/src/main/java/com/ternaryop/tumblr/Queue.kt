@@ -43,28 +43,6 @@ fun Tumblr.schedulePost(tumblrName: String, post: TumblrPost, timestamp: Long): 
     }
 }
 
-fun Tumblr.queueCount(tumblrName: String): Int {
-    // do not use Tumblr.getQueue() because it creates unused TumblrPost
-    val apiUrl = Tumblr.getApiUrl(tumblrName, "/posts/queue")
-    var count = 0
-    var readCount: Int
-
-    try {
-        val params = HashMap<String, String>(1)
-        do {
-            val arr =
-                consumer.jsonFromGet(apiUrl, params).getJSONObject("response").getJSONArray("posts")
-            readCount = arr.length()
-            count += readCount
-            params["offset"] = count.toString()
-        } while (readCount == Tumblr.MAX_POST_PER_REQUEST)
-    } catch (e: JSONException) {
-        throw TumblrException(e)
-    }
-
-    return count
-}
-
 fun Tumblr.queueAll(tumblrName: String): List<TumblrPost> {
     val list = mutableListOf<TumblrPost>()
     var readCount: Int

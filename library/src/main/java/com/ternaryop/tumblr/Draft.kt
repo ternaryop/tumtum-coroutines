@@ -53,25 +53,3 @@ private fun addNewerPosts(list: MutableList<TumblrPost>, jsonPosts: JSONArray, m
     }
     return true
 }
-
-fun Tumblr.draftCount(tumblrName: String): Int {
-    val apiUrl = Tumblr.getApiUrl(tumblrName, "/posts/draft")
-    var count = 0
-
-    try {
-        val json = consumer.jsonFromGet(apiUrl)
-        var arr = json.getJSONObject("response").getJSONArray("posts")
-
-        val params = HashMap<String, String>(1)
-        while (arr.length() > 0) {
-            count += arr.length()
-            params["before_id"] = arr.getJSONObject(arr.length() - 1).getString("id")
-
-            arr = consumer.jsonFromGet(apiUrl, params).getJSONObject("response").getJSONArray("posts")
-        }
-    } catch (e: JSONException) {
-        throw TumblrException(e)
-    }
-
-    return count
-}
