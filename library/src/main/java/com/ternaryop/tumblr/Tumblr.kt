@@ -6,14 +6,14 @@ import org.json.JSONObject
 
 class Tumblr constructor(val consumer: TumblrHttpOAuthConsumer) {
 
-    val blogList: Array<Blog>
+    val blogList: List<Blog>
         get() {
             val apiUrl = "$API_PREFIX/user/info"
 
             try {
                 val json = consumer.jsonFromGet(apiUrl)
                 val jsonBlogs = json.getJSONObject("response").getJSONObject("user").getJSONArray("blogs")
-                return (0 until jsonBlogs.length()).map { Blog(jsonBlogs.getJSONObject(it)) }.toTypedArray()
+                return (0 until jsonBlogs.length()).map { Blog(jsonBlogs.getJSONObject(it)) }
             } catch (e: JSONException) {
                 throw TumblrException(e)
             }
