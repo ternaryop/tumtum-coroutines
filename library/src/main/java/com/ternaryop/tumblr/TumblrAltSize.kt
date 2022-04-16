@@ -4,6 +4,11 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.Serializable
 
+fun List<TumblrAltSize>.getClosestByWidth(width: Int): TumblrAltSize? {
+    // some images don't have the exact (==) width so we get closest width (<=)
+    return firstOrNull { it.width <= width }
+}
+
 class TumblrAltSize @Throws(JSONException::class) constructor(json: JSONObject) : Serializable {
     var width: Int = json.getInt("width")
     var height: Int = json.getInt("height")

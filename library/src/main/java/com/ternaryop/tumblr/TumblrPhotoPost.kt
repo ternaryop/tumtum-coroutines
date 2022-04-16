@@ -28,10 +28,7 @@ open class TumblrPhotoPost : TumblrPost {
         caption = photoPost.caption
     }
 
-    fun getClosestPhotoByWidth(width: Int): TumblrAltSize? {
-        // some images don't have the exact (==) width so we get closest width (<=)
-        return firstPhotoAltSize?.firstOrNull { it.width <= width }
-    }
+    fun getClosestPhotoByWidth(width: Int): TumblrAltSize? = firstPhotoAltSize?.getClosestByWidth(width)
 
     override fun toString() = caption
 
