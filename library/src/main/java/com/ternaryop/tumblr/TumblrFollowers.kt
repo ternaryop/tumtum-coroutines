@@ -22,4 +22,7 @@ class TumblrFollowers : Serializable {
             usersList.add(TumblrUser(users.getJSONObject(i)))
         }
     }
+    companion object {
+        private const val serialVersionUID: Long = 1
+    }
 }

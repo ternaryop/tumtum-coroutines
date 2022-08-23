@@ -18,4 +18,7 @@ class TumblrUser @Throws(JSONException::class) constructor(json: JSONObject) : S
     override fun toString(): String {
         return "$name is following? $isFollowing last update $updated url $url"
     }
+    companion object {
+        private const val serialVersionUID: Long = 1
+    }
 }

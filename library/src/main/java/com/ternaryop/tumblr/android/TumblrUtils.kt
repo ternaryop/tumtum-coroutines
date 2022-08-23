@@ -3,6 +3,7 @@ package com.ternaryop.tumblr.android
 import com.ternaryop.tumblr.Tumblr
 import com.ternaryop.tumblr.TumblrPost
 
+@Suppress("ReturnCount")
 fun Tumblr.editTags(postId: Long, blogName: String, tagsToAdd: List<String>): List<String>? {
     val postsList = getPublicPosts(blogName, mapOf("id" to postId.toString()))
 

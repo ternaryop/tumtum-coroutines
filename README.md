@@ -39,3 +39,11 @@ Android Studio configuration
 |      Name      | Gradle Project      | Tasks               |
 |:--------------:|---------------------|---------------------|
 | Local Install  | ../app/build.gradle | publishToMavenLocal |
+
+Common tasks
+============
+
+Run lint and detekt
+--
+
+    ./gradlew check
